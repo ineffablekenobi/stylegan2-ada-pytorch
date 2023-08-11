@@ -10,9 +10,10 @@
 supports arbitrarily high order gradients between the input and output.
 Only works on 2D images and assumes
 `mode='bilinear'`, `padding_mode='zeros'`, `align_corners=False`."""
-
 import warnings
+import contextlib
 import torch
+
 
 # pylint: disable=redefined-builtin
 # pylint: disable=arguments-differ
@@ -20,7 +21,7 @@ import torch
 
 #----------------------------------------------------------------------------
 
-enabled = False  # Enable the custom op by setting this to true.
+enabled = True  # Enable the custom op by setting this to true.
 
 #----------------------------------------------------------------------------
 
@@ -34,7 +35,8 @@ def grid_sample(input, grid):
 def _should_use_custom_op():
     if not enabled:
         return False
-    if any(torch.__version__.startswith(x) for x in ['1.7.', '1.8.', '1.9']):
+    if any(torch.__version__.startswith(x) for x in ['1.7.', '1.8.', '1.9', '2.0']):
+        print("WORKED 1")
         return True
     warnings.warn(f'grid_sample_gradfix not supported on PyTorch {torch.__version__}. Falling back to torch.nn.functional.grid_sample().')
     return False
