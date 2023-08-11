@@ -9,6 +9,10 @@
 """Custom replacement for `torch.nn.functional.conv2d` that supports
 arbitrarily high order gradients with zero performance penalty."""
 
+import warnings
+import contextlib
+import torch
+
 
 # pylint: disable=redefined-builtin
 # pylint: disable=arguments-differ
